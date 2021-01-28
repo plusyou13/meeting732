@@ -1,4 +1,4 @@
-module meeting732
+module github.com/plusyou13/meeting732
 
 go 1.15
 
