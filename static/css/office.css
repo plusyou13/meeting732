@@ -1,75 +1,88 @@
-.office{
+.office {
     width: 430px;
     margin: 0 auto;
     background: #f7f7f7;
-    box-shadow: 0 0 20px 1px rgba(0,0,0,0.3);
-    padding-bottom:50px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.3);
+    padding-bottom: 50px;
 }
-@media (max-width: 768px){
-    .office{
+
+@media (max-width: 768px) {
+    .office {
         width: 98%;
         margin: 0 auto;
         background: #f7f7f7;
-        box-shadow: 0 0 20px 1px rgba(0,0,0,0.3);
-        padding-bottom:50px;
+        box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.3);
+        padding-bottom: 50px;
     }
 }
 
 .office .office-time {
     padding: 15px;
     background: #fff;
-    margin-top:15px;
+    margin-top: 15px;
 }
+
 .office .office-time h4 {
     font-size: 16px;
     color: #010101;
     margin-bottom: 10px;
 }
+
 .office .office-time p {
     font-size: 14px;
     color: #7f7f7f;
     margin-bottom: 15px;
 }
-.office-time-legend{
+
+.office-time-legend {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin:15px 0;
+    margin: 15px 0;
 }
-.office-time-legend .office-time-legend-item{
+
+.office-time-legend .office-time-legend-item {
     display: flex;
 }
-.office-time-legend .legend-img{
-    width:19px;
-    height:19px;
+
+.office-time-legend .legend-img {
+    width: 19px;
+    height: 19px;
     border-radius: 3px;
-    border:1px solid #ddd;
-    margin-right:5px;
+    border: 1px solid #ddd;
+    margin-right: 5px;
 }
-.office-time-legend .legend-img.used{
+
+.office-time-legend .legend-img.used {
     background: #fff;
 }
-.office-time-legend .legend-img.disabled{
+
+.office-time-legend .legend-img.disabled {
     background: #999999;
 }
-.office-time-legend .legend-img.checked{
+
+.office-time-legend .legend-img.checked {
     background: #7ed320;
 }
-.office-time-legend .legend-text{
-    font-size:14px;
-    color:#010101;
+
+.office-time-legend .legend-text {
+    font-size: 14px;
+    color: #010101;
 }
+
 .office .office-time-con.office-time-slot {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
+
 .office .office-time-con.office-time-slot .office-time-item {
     font-size: 14px;
     margin-bottom: 10px;
     margin-left: 10px;
     cursor: pointer;
 }
+
 .office .office-time-con .office-time-item {
     width: 53px;
     height: 53px;
@@ -79,18 +92,21 @@
     line-height: 53px;
     color: #010101;
 }
+
 .office .office-time-con.office-time-slot .office-time-item.checked {
     color: #010101;
     background: #7ed320;
 }
 
-.office .office-time-con.office-time-slot .office-time-item.disable{
-    color:#010101;
+.office .office-time-con.office-time-slot .office-time-item.disable {
+    color: #010101;
     background: #999999;
 }
+
 .weui-btn-area {
     margin: 0.5em 15px 1.17em;
 }
+
 .weui-btn {
     position: relative;
     display: block;
@@ -105,43 +121,54 @@
     color: #fff;
     line-height: 2.55555556;
     border-radius: 5px;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     overflow: hidden;
 }
+
 .weui-btn_main {
     background-color: #38acff;
-    margin:20px 0 5px;
+    margin: 20px 0 5px;
 }
 
-.office .office-time-con.office-time-data{
+.office .office-time-con.office-time-data {
     /* overflow-x: scroll; display: -webkit-box; -webkit-overflow-scrolling: touch; */
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
 
-.office-time-data::-webkit-scrollbar {width:0;height:0;display: none;}
-.office .office-time-con.office-time-data .office-time-item{
-    margin-right:10px;
+.office-time-data::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.office .office-time-con.office-time-data .office-time-item {
+    margin-right: 10px;
     cursor: pointer;
 }
-.office .office-time-con.office-time-data .office-time-item.checked{
-    border:1px solid #38adfd;
-    color:#38adfd;
+
+.office .office-time-con.office-time-data .office-time-item.checked {
+    border: 1px solid #38adfd;
+    color: #38adfd;
     background: #f2f9ff;
 }
-.office .office-time-con.office-time-data .office-time-item span{
+
+.office .office-time-con.office-time-data .office-time-item span {
     font-size: 12px;
     color: #999;
     display: inline-block;
     margin-top: 8px;
 }
-.office .office-time-con.office-time-data .office-time-item.checked span{
-    color:#38adfd;
+
+.office .office-time-con.office-time-data .office-time-item.checked span {
+    color: #38adfd;
 }
+
 .office .office-time-con.office-time-slot .office-time-item:nth-child(6n+0) {
     margin-right: 0;
 }
+
 .office .office-time-con.office-time-data .office-time-item {
     font-size: 13px;
     line-height: 1;
