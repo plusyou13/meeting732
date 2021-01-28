@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建会议</title>
+
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/office.css">
+</head>
+
+<body>
+    <input type="text" hidden="true" value="{{.date}}" class="nowDate">
+    <div class="office">
+        <div class="weui-panel">
+            <div class="office-time">
+                <h4>预定{{.date}}的会议</h4>
+                <div class="row">
+                    <div class="col-md-3 col-xs-3">
+                        <p style="text-align: right;">发起人:</p>
+                    </div>
+                    <div class="col-md-9 col-xs-9">
+                        <input type="text" style="width: 100%;" id="publisher">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-xs-3">
+                        <p style="text-align: right;">参与人:</p>
+                    </div>
+                    <div class="col-md-9 col-xs-9">
+                        <input type="text" style="width: 100%;" id="participants">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-xs-3">
+                        <p style="text-align: right;">会议内容:</p>
+                    </div>
+                    <div class="col-md-9 col-xs-9">
+                        <textarea id="content" cols="30" rows="3" style="width: 100%;"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-panel">
+            <div class="office-time">
+                <h4>预约时段</h4>
+                <div class="office-time-legend">
+                    <div class="office-time-legend-item">
+                        <div class="legend-img used"></div>
+                        <div class="legend-text">可选</div>
+                    </div>
+                    <div class="office-time-legend-item">
+                        <div class="legend-img disabled"></div>
+                        <div class="legend-text">已预订</div>
+                    </div>
+                    <div class="office-time-legend-item">
+                        <div class="legend-img checked"></div>
+                        <div class="legend-text">已选</div>
+                    </div>
+                </div>
+                <div class="office-time-con office-time-slot" id="timeSoltCon">
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-btn-area">
+            <div class="row">
+                <div class="col-md-6 col-xs-6">
+                    <a class="weui-btn weui-btn_main" style="background-color: gray;text-decoration:none;" href="/">取消</a>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <a class="weui-btn weui-btn_main" style="text-decoration:none;" href="javascript:;" id="submitOrder">提交</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="/static/js/com.js"></script>
+    <script>
+        var box1 = null, box2 = null;
+        function setTimeSelectEvent() {
+            $("#timeSoltCon").on("click", ".office-time-item", function (e) {
+                var $this = $(this);
+                var $boxes = $this.parent().children();
+                if ($this.hasClass('disable'))
+                    return;
+                
+                if (!box1){
+                    box1 = $this;
+                    $boxes.removeClass('checked');
+                    $this.addClass('checked');
+                    box2 = null;
+                } else if (!box2){
+                    box2 = $this;
+                    var box1Index = box1.index();
+                    var box2Index = box2.index();
+
+                    var startBoxIndex = Math.min(box1Index, box2Index);
+                    var endBoxIndex = Math.max(box1Index, box2Index);
+                    if (startBoxIndex === endBoxIndex) {
+                        box2 = null;
+                    }
+
+                    var $startEndBoxRange = $boxes.filter(function () {
+                    var index = $(this).index();
+                        return index >= startBoxIndex && index <= endBoxIndex;
+                    });
+                    var $disableBoxes = $startEndBoxRange.filter(function () {
+                        return $(this).hasClass('disable');
+                    });
+
+                    if ($disableBoxes.length) {
+                        box2 = null;
+                    } else {
+                        $boxes.removeClass('checked');
+                        $startEndBoxRange.addClass('checked');
+                    }
+                } else {
+                    $boxes.removeClass('checked');
+                    $this.addClass('checked');
+                    box2 = null;
+                    box1 = $this;
+                }
+            })
+        }
+        function isSelect(arr, t) {
+            for (let index = 0; index < arr.length; index++) {
+                const ele = arr[index];
+                if (Number(ele) == Number(t)) {
+                    return true
+                }
+            }
+            return false
+        }
+        $(function () {
+            getWebService("/meeting?date="+$(".nowDate").val(), function (data){
+                var str = ''
+                for (let index = 9; index < 19; index++) {
+                    str += `<div class="office-time-item slot_ `
+                    for (let j = 0; j < data.length; j++) {
+                        const ele = data[j];
+                        if (isSelect(ele["select"], index)) {
+                            str += "disable"
+                            break
+                        }
+                    }
+                    
+                    str += `" data-index="`+index+`" >` + index + `:00</div>`
+                }
+
+                $("#timeSoltCon").html(str)
+            })
+
+            setTimeSelectEvent()
+        })
+
+        $("#submitOrder").on("click", function () {
+            console.log("submit")
+            var $boxes = $("#timeSoltCon").children();
+            var $checkBoxes = $boxes.filter(function () {
+                return $(this).hasClass('checked');
+            });
+            var $select = new Array()
+            for (let index = 0; index < $checkBoxes.length; index++) {
+                const ele = $checkBoxes[index];
+                $select.push($(ele).data("index"))
+            }
+
+            if($("#publisher").val() == '' || $("#participants").val() == '' || $("#content").val() == '' || !box1||!box2){
+                alert("你不会打字吗？")
+                return
+            }
+
+            postWebService(
+                "/meeting", 
+                {
+                    "publisher": $("#publisher").val(),
+                    "participants": $("#participants").val(),
+                    "content": $("#content").val(),
+                    "date": $(".nowDate").val(),
+                    "select": $select,
+                }, 
+                function (status, result) {
+                if (status != 200) {
+                    alert("提交失败了")
+                }else{
+                    alert("提交成功")
+                    window.location.replace('/?date='+$(".nowDate").val())
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

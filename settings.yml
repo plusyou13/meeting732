@@ -1,0 +1,12 @@
+port: 8081
+
+log:
+  log_path: ""
+  log_size: 104857600
+  log_count: 30
+  log_level: 0
+
+mongodb:
+  host: "mongodb://localhost:27017/metting_reserve"
+  username: ""
+  password: ""

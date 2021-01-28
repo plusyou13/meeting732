@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>732实验室占用情况</title>
+
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/office.css">
+    <link rel="stylesheet" href="/static/css/layer-animate.css">
+</head>
+
+<body>
+    <input type="text" hidden="true" value="{{.date}}" class="nowDate">
+    <div class="office">
+        <div class="weui-panel">
+            <div class="office-time">
+                <h4>接下来14天</h4>
+                <div class="office-time-con office-time-data" id="office-date">
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-panel">
+            <div class="office-time">
+                <h4>预约时段</h4>
+                <div class="office-time-legend">
+                    <div class="office-time-legend-item">
+                        <div class="legend-img used"></div>
+                        <div class="legend-text">可预定</div>
+                    </div>
+                    <div class="office-time-legend-item">
+                        <div class="legend-img disabled"></div>
+                        <div class="legend-text">已预订</div>
+                    </div>
+                </div>
+                <div class="office-time-con office-time-slot" id="timeSoltCon">
+                </div>
+            </div>
+        </div>
+
+        <div class="weui-btn-area">
+            <div class="row">
+                <div class="col-md-6 col-xs-6">
+                    <a class="weui-btn weui-btn_main" style="background-color: gray;text-decoration:none;" href="javascript:;" id="checkdetail">查看详情</a>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <a class="weui-btn weui-btn_main" href="javascript:;" id="submitOrder">立即预约</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="/static/js/method.js"></script>
+    <script src="/static/js/com.js"></script>
+    <script>
+        var MeetingData;
+        function setDateSelect() {
+            $("#office-date").on("click", ".date_", function (e) {
+                window.location.replace('/?date='+$(this).data("val"))
+            })
+        }
+
+        function isSelect(arr, t) {
+            for (let index = 0; index < arr.length; index++) {
+                const ele = arr[index];
+                if (Number(ele) == Number(t)) {
+                    return true
+                }
+            }
+            return false
+        }
+
+        $(function () {
+            getWebService("/meeting?date="+$(".nowDate").val(), function (data){
+                var str = ''
+                MeetingData = data
+                for (let index = 9; index < 19; index++) {
+                    str += `<div class="office-time-item slot_ `
+                    for (let j = 0; j < data.length; j++) {
+                        const ele = data[j];
+                        if (isSelect(ele["select"], index)) {
+                            str += "disable"
+                            break
+                        }
+                    }
+                    
+                    str += `" data-index="`+index+`" >` + index + `:00</div>`
+                }
+
+                $("#timeSoltCon").html(str)
+            })
+
+            getWebService("/date", function (data) {
+                var str = '';
+                for (let index = 0; index < data.length; index++) {
+                    const element = data[index];
+                    for (const key in element) {
+                        if (element.hasOwnProperty(key)) {
+                            const val = element[key];
+                            str += `<div class=" `
+
+                            if ($(".nowDate").val() == '' && index == 0) {
+                                str += `checked `
+                            }
+
+                            if ($(".nowDate").val() == val){
+                                str += `checked `
+                            }
+                            str += `office-time-item date_" data-val="` + val + `">` + key + `<span>` + val + `</span></div>`
+                        }
+                    }
+                }
+
+                $("#office-date").html(str)
+
+                setDateSelect()
+            })
+        })
+
+        $("#submitOrder").on("click", function () {
+            window.location.replace('/create?date='+$(".nowDate").val())
+        })
+
+        $("#checkdetail").on("click", function(){
+            console.log(MeetingData)
+
+            var str = ''
+            for (let index = 0; index < MeetingData.length; index++) {
+                const ele = MeetingData[index];
+                str += `<h4>会议  `+Number(index)+1+`</h4>`
+                str += `<p>发起人:  `+ele["publisher"]+`</p>`
+                str += `<p>参与人:  `+ele["participants"]+`</p>`
+                str += `<p>会议时间:`+ele["select"][0]+`点 - `+ele["select"][ele["select"].length-1]+`点</p>`
+                str += `<p>会议内容:`+ele["content"]+`</p>`
+            }
+
+            var obj = {
+                type: "none",
+                title: "会议详情",
+                content: str,
+                area:["350px", "400px"]
+            }
+            method.msg_layer(obj)
+        })
+    </script>
+</body>
+
+</html>
