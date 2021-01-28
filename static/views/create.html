@@ -25,14 +25,6 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-3 col-xs-3">
-                        <p style="text-align: right;">参与人:</p>
-                    </div>
-                    <div class="col-md-9 col-xs-9">
-                        <input type="text" style="width: 100%;" id="participants">
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="col-md-3 col-xs-3">
@@ -174,8 +166,8 @@
                 $select.push($(ele).data("index"))
             }
 
-            if($("#publisher").val() == '' || $("#participants").val() == '' || $("#content").val() == '' || !box1||!box2){
-                alert("你不会打字吗？")
+            if($("#publisher").val() == ''  || $("#content").val() == '' || !box1||!box2){
+                alert("请输入会议信息")
                 return
             }
 
@@ -183,7 +175,7 @@
                 "/meeting", 
                 {
                     "publisher": $("#publisher").val(),
-                    "participants": $("#participants").val(),
+
                     "content": $("#content").val(),
                     "date": $(".nowDate").val(),
                     "select": $select,
