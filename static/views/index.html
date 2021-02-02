@@ -128,22 +128,25 @@
     })
 
     $("#checkdetail").on("click", function () {
+        // <a class="weui-btn weui-btn_main" style="text-decoration:none;" href="javascript:;" id="delOrder">删除</a>
         console.log(MeetingData)
-
+       
         var str = ''
         for (let index = 0; index < MeetingData.length; index++) {
             const ele = MeetingData[index];
-            str += `<h4>会议  ` + Number(index) + 1 + `</h4>`
+            // <a class="weui-btn weui-btn_main" style="text-decoration:none;" href="javascript:;" id="delOrder">删除</a>
+            str += `<h4>会议  ` + Number(index+1) + `</h4>`
             str += `<p>发起人:  ` + ele["publisher"] + `</p>`
             str += `<p>会议时间:` + ele["select"][0] + `点 - ` + ele["select"][ele["select"].length - 1] + `点</p>`
             str += `<p>会议内容:` + ele["content"] + `</p>`
+            
         }
 
         var obj = {
             type: "none",
             title: "会议详情",
             content: str,
-            area: ["350px", "400px"]
+            area: ["350px", "500px"]
         }
         method.msg_layer(obj)
     })

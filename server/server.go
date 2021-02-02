@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/plusyou13/comm-go/log"
 )
@@ -31,6 +32,7 @@ func router() *gin.Engine {
 	})
 	g.GET("/date", GetDate)
 	g.POST("/meeting", PostMeeting)
+	g.POST("/meeting_del", DelMeetings)
 	g.GET("/meeting", GetMeetings)
 	return g
 }

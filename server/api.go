@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/plusyou13/comm-go/log"
 	"github.com/plusyou13/meeting732/store"
-	"github.com/gin-gonic/gin"
 )
 
 var weekDayS = []string{"日", "一", "二", "三", "四", "五", "六"}
@@ -58,6 +58,11 @@ func PostMeeting(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(200, struct{}{})
+}
+
+func DelMeetings(ctx *gin.Context) {
+	date := ctx.Query("date")
+	store.DeleteMeetingsWithDate(date)
 }
 
 func GetMeetings(ctx *gin.Context) {

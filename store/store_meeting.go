@@ -28,6 +28,13 @@ func SaveMeetingData(data *MeetingData) error {
 	return err
 }
 
+func DeleteMeetingsWithDate(date string) {
+	collection := mongoCli.Database(DB).Collection(C_Metting)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	collection.DeleteOne(ctx, bson.M{"date": date, "year": time.Now().Year()})
+}
+
 func GetMeetingsWithDate(date string) ([]*MeetingData, error) {
 	collection := mongoCli.Database(DB).Collection(C_Metting)
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
