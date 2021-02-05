@@ -126,7 +126,7 @@
         function isSelect(arr, t) {
             for (let index = 0; index < arr.length; index++) {
                 const ele = arr[index];
-                if (Number(ele) == Number(t)) {
+                if (Number(ele) === Number(t)) {
                     return true
                 }
             }
@@ -135,7 +135,7 @@
         $(function () {
             getWebService("/meeting?date="+$(".nowDate").val(), function (data){
                 var str = ''
-                for (let index = 9; index < 19; index++) {
+                for (let index = 18; index < 36; index++) {
                     str += `<div class="office-time-item slot_ `
                     for (let j = 0; j < data.length; j++) {
                         const ele = data[j];
@@ -144,8 +144,14 @@
                             break
                         }
                     }
-                    
-                    str += `" data-index="`+index+`" >` + index + `:00</div>`
+
+                    if(index % 2 === 0){
+                        str += `" data-index="` + index + `" >` + index/2 + `:00</div>`
+
+                    }
+                    else {
+                        str += `" data-index="` + index + `" >` + (index-1)/2 + `:30</div>`
+                    }
                 }
 
                 $("#timeSoltCon").html(str)

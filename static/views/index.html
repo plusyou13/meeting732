@@ -80,7 +80,7 @@
         getWebService("/meeting?date=" + $(".nowDate").val(), function (data) {
             var str = ''
             MeetingData = data
-            for (let index = 9; index < 19; index++) {
+            for (let index = 18; index < 36; index++) {
                 str += `<div class="office-time-item slot_ `
                 for (let j = 0; j < data.length; j++) {
                     const ele = data[j];
@@ -89,11 +89,16 @@
                         break
                     }
                 }
+                if(index % 2 === 0){
+                    str += `" data-index="` + index + `" >` + index/2 + `:00</div>`
 
-                str += `" data-index="` + index + `" >` + index + `:00</div>`
+                }
+                else {
+                    str += `" data-index="` + index + `" >` + (index-1)/2 + `:30</div>`
+                }
             }
+                    $("#timeSoltCon").html(str)
 
-            $("#timeSoltCon").html(str)
         })
 
         getWebService("/date", function (data) {
@@ -132,12 +137,22 @@
         console.log(MeetingData)
        
         var str = ''
+        var start=''
+        var end=''
         for (let index = 0; index < MeetingData.length; index++) {
             const ele = MeetingData[index];
-            // <a class="weui-btn weui-btn_main" style="text-decoration:none;" href="javascript:;" id="delOrder">删除</a>
+            if((ele["select"][0])%2===0){
+                start=(ele["select"][0]/2)+':00'
+            }
+            else start=(ele["select"][0]-1)/2+':30'
+
+            if((ele["select"][ele["select"].length - 1])%2===0){
+                end=((ele["select"][ele["select"].length - 1])/2)+':00'
+            }
+            else end=(((ele["select"][ele["select"].length - 1])-1)/2)+':30'
             str += `<h4>会议  ` + Number(index+1) + `</h4>`
             str += `<p>发起人:  ` + ele["publisher"] + `</p>`
-            str += `<p>会议时间:` + ele["select"][0] + `点 - ` + ele["select"][ele["select"].length - 1] + `点</p>`
+            str += `<p>会议时间:` + start + `   ~  ` + end + `</p>`
             str += `<p>会议内容:` + ele["content"] + `</p>`
             
         }

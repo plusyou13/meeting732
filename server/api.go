@@ -16,7 +16,7 @@ func GetDate(ctx *gin.Context) {
 
 	result := []map[string]string{}
 
-	for i := 0; i < 14; i++ {
+	for i := 0; i < 10; i++ {
 		s := fmt.Sprintf("%d月%d日", now.Month(), now.Day())
 
 		switch i {
