@@ -1,4 +1,4 @@
-port: 38791
+port: 8889
 
 log:
   log_path: ""
